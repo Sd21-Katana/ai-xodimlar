@@ -369,6 +369,7 @@ const track = $('#logos');
 // Videolar: sahifa yengil bo'lishi uchun faqat bosilganda yuklanadi
 const vids = $('#vids');
 const VIDEOS = [13, 14, 4, 5, 6, 7, 8, 9];
+let playing = null;
 for (const [k, i] of [...VIDEOS, ...VIDEOS].entries()) {
   const n = String(i).padStart(2, '0');
   const card = document.createElement('div');
