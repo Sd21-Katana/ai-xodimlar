@@ -1,0 +1,8 @@
+# Saytga chiqmaydigan fayllar: asl nusxalar, ichki hujjatlar va skriptlar
+assets/videolar/raw/
+assets/videolar/chiqarilgan/
+assets/loyihalar/
+assets/spiker.jpg
+assets/logo-yashil-fon.png
+*.py
+TZ.md
