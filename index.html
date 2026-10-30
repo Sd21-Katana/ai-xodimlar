@@ -59,6 +59,7 @@ h1 em{font-style:normal;color:var(--gold-l)}
 .fc dt{font-size:11.5px;font-weight:600;letter-spacing:.08em;color:var(--gold-l)}
 .fc dd{margin:0 0 7px;font-weight:600;font-size:15px;line-height:1.3}
 .fc dd:last-child{margin-bottom:0}
+.fc small{display:block;font-weight:500;font-size:13.5px;color:#C9D8D2}
 .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;padding:12px 20px;border:0;border-radius:10px;background:var(--gold-l);color:var(--em);font:700 20px/1.2 var(--head);letter-spacing:.03em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .15s}
 .btn:hover{background:#F2DBA8}
 .btn:disabled{opacity:.6;cursor:wait}
@@ -81,13 +82,14 @@ h2.plain b{font-weight:700}
 
 /* Logolar */
 .logos{margin-top:28px;overflow:hidden}
-.logos-t{display:flex;gap:18px;width:max-content;will-change:transform}
-.logos-t img{width:118px;height:118px;object-fit:contain;flex:none}
+.logos-t{display:flex;width:max-content;will-change:transform;animation:logos 3s linear infinite}
+.logos-t img{width:118px;height:118px;object-fit:contain;flex:none;margin-right:18px}
+@keyframes logos{to{transform:translateX(-50%)}}
 
 /* Videolar */
-.vids{margin:28px -16px 0;padding:0 16px 8px;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;scrollbar-width:none}
+.vids{margin:28px -16px 0;padding:0 16px 8px;display:flex;gap:12px;overflow-x:auto;scrollbar-width:none}
 .vids::-webkit-scrollbar{display:none}
-.v{flex:none;width:min(66vw,250px);aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:var(--em);position:relative;scroll-snap-align:start}
+.v{flex:none;width:min(66vw,250px);aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:var(--em);position:relative}
 .v button{all:unset;display:block;width:100%;height:100%;cursor:pointer;position:relative}
 .v button:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
 .v img,.v video{width:100%;height:100%;object-fit:cover}
@@ -168,7 +170,7 @@ fieldset{border:0;padding:0;min-width:0}
   section.s{padding:72px 0}
   .bio{grid-template-columns:380px 1fr;gap:48px;align-items:center}
   .prob{grid-template-columns:1fr 1fr}
-  .vids{margin-inline:0;padding-inline:0;scroll-padding-left:0}
+  .vids{margin-inline:0;padding-inline:0}
   .vnav{display:flex}
   .vhint{display:none}
   .pay{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
@@ -176,7 +178,7 @@ fieldset{border:0;padding:0;min-width:0}
   .bar{display:none}
   .foot{padding-bottom:20px}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.logos-t{animation:none}}
 </style>
 </head>
 <body>
@@ -206,11 +208,11 @@ fieldset{border:0;padding:0;min-width:0}
       <div class="facts">
         <div class="fc">
           <p class="fc-c"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E8CB8E" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>Denov</p>
-          <dl><dt>KUNI</dt><dd>7-noyabr, shanba</dd><dt>VAQTI</dt><dd>14:00–18:00</dd></dl>
+          <dl><dt>KUNI</dt><dd>7-noyabr<small>shanba</small></dd><dt>VAQTI</dt><dd>14:00–18:00</dd></dl>
         </div>
         <div class="fc">
           <p class="fc-c"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E8CB8E" d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>Termiz</p>
-          <dl><dt>KUNI</dt><dd>8-noyabr, yakshanba</dd><dt>VAQTI</dt><dd>14:00–18:00</dd></dl>
+          <dl><dt>KUNI</dt><dd>8-noyabr<small>yakshanba</small></dd><dt>VAQTI</dt><dd>14:00–18:00</dd></dl>
         </div>
       </div>
       <a class="btn" href="#yozilish">Intensivga yozilish</a>
@@ -343,30 +345,18 @@ const CONFIG = { CRM_URL: 'https://lid-crm-production.up.railway.app/public/lead
 
 const $ = s => document.querySelector(s);
 
-// Logolar: har 0,5 soniyada bitta logoga suriladi
+// Logolar: to'xtamasdan silliq aylanadi, ikkinchi nusxa aylana chegarasini yashiradi
 const track = $('#logos');
 [...track.children].forEach(x => track.append(x.cloneNode(true)));
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  setInterval(() => {
-    const step = track.children[1].offsetLeft - track.children[0].offsetLeft;
-    track.style.transition = 'transform .32s ease';
-    track.style.transform = `translateX(${-step}px)`;
-    setTimeout(() => {
-      track.style.transition = 'none';
-      track.append(track.firstElementChild);
-      track.style.transform = 'none';
-    }, 340);
-  }, 500);
-}
 
 // Videolar: sahifa yengil bo'lishi uchun faqat bosilganda yuklanadi
 const vids = $('#vids');
 const VIDEOS = [13, 14, 4, 5, 6, 7, 8, 9];
-for (const [k, i] of VIDEOS.entries()) {
+for (const [k, i] of [...VIDEOS, ...VIDEOS].entries()) {
   const n = String(i).padStart(2, '0');
   const card = document.createElement('div');
   card.className = 'v';
-  card.innerHTML = `<button type="button" aria-label="${k + 1}-videoni ko'rish"><img src="assets/videolar/denov-${n}.jpg" alt="" loading="lazy" width="360" height="640"><i></i></button>`;
+  card.innerHTML = `<button type="button" aria-label="${k % VIDEOS.length + 1}-videoni ko'rish"><img src="assets/videolar/denov-${n}.jpg" alt="" loading="lazy" width="360" height="640"><i></i></button>`;
   card.firstChild.addEventListener('click', () => {
     vids.querySelectorAll('video').forEach(v => v.pause());
     const v = document.createElement('video');
@@ -380,7 +370,32 @@ for (const [k, i] of VIDEOS.entries()) {
   });
   vids.append(card);
 }
-const slide = dir => vids.scrollBy({ left: dir * (vids.firstElementChild.offsetWidth + 12) * 2, behavior: 'smooth' });
+
+// Karusel o'zi silliq aylanadi. Barmoq tekkanda yoki video ijro etilayotganda to'xtab turadi.
+const CARD_SEC = 2;   // bitta video shuncha soniyada o'tadi
+const PAUSE_MS = 1500;
+let pos = 0, last = 0, resumeAt = 0;
+const hold = ms => { resumeAt = performance.now() + ms; };
+const roll = t => {
+  const dt = Math.min(t - last, 50) / 1000;
+  last = t;
+  const cards = vids.children, loop = cards[VIDEOS.length].offsetLeft - cards[0].offsetLeft;
+  const busy = t < resumeAt || [...vids.querySelectorAll('video')].some(v => !v.paused);
+  if (busy) pos = vids.scrollLeft;
+  else {
+    pos += loop / VIDEOS.length / CARD_SEC * dt;
+    if (pos >= loop) pos -= loop;
+    vids.scrollLeft = pos;
+  }
+  requestAnimationFrame(roll);
+};
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(roll);
+['pointerdown', 'touchstart'].forEach(e => vids.addEventListener(e, () => hold(1e9), { passive: true }));
+['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(e => vids.addEventListener(e, () => hold(PAUSE_MS), { passive: true }));
+const slide = dir => {
+  hold(PAUSE_MS);
+  vids.scrollBy({ left: dir * (vids.firstElementChild.offsetWidth + 12) * 2, behavior: 'smooth' });
+};
 $('#vprev').onclick = () => slide(-1);
 $('#vnext').onclick = () => slide(1);
 
