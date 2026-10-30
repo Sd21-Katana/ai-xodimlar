@@ -393,11 +393,11 @@ for (const [k, i] of [...VIDEOS, ...VIDEOS].entries()) {
 // Karusel o'zi silliq aylanadi. Barmoq tekkanda yoki video ijro etilayotganda to'xtab turadi.
 const CARD_SEC = 2;   // bitta video shuncha soniyada o'tadi
 const PAUSE_MS = 1500;
-let pos = 0, last = 0, resumeAt = 0, loop = 0, seen = false;
+let pos = 0, last = 0, resumeAt = 0, loop = 0, inView = false;
 const hold = ms => { resumeAt = performance.now() + ms; };
 const measure = () => { loop = vids.children[VIDEOS.length].offsetLeft - vids.children[0].offsetLeft; };
 const roll = t => {
-  if (!seen) return;
+  if (!inView) return;
   const dt = Math.min(t - last, 50) / 1000;
   last = t;
   if (t < resumeAt || playing) pos = vids.scrollLeft;
@@ -412,9 +412,9 @@ const roll = t => {
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   addEventListener('resize', measure);
   new IntersectionObserver(([e]) => {
-    const was = seen;
-    seen = e.isIntersecting;
-    if (seen && !was) { measure(); last = performance.now(); requestAnimationFrame(roll); }
+    const was = inView;
+    inView = e.isIntersecting;
+    if (inView && !was) { measure(); last = performance.now(); requestAnimationFrame(roll); }
   }).observe(vids);
 }
 ['pointerdown', 'touchstart'].forEach(e => vids.addEventListener(e, () => hold(1e9), { passive: true }));
