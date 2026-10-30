@@ -456,7 +456,7 @@ $('#lead').addEventListener('submit', async e => {
   if (!city) { err.textContent = 'Shaharni tanlang.'; return; }
   err.textContent = '';
 
-  const utm = Object.fromEntries([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_')));
+  const utm = Object.fromEntries([...new URLSearchParams(location.search)].filter(([k]) => k.startsWith('utm_') || k === 'manba'));
   const date = city === 'Denov' ? '2026-11-07' : '2026-11-08';
   const lead = { name, phone: '+998' + digits, city, date, price: 197000, source: 'landing-ai-xodimlar', ...utm };
 
